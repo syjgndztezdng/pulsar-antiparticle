@@ -885,12 +885,10 @@ class PhotonSimulator():
             R = 0.23 * (a / l) * (B_abs * sin_theta) / B_crit * np.exp((-4/(3*chi)))
         elif chi > 10:
             # вычисляю по степеному приближению
-            factor = a * (MASS_E_C2 ** 2) / (np.pi * T)
-            R = factor * (1.19 * (chi ** (2/3)) - 2*np.pi/3)
+            R = 0.38 * (a / l) * (B_abs * sin_theta) / B_crit * (chi ** (-1/3))
         else:
-            # вычисляю по квазиклассическому приближению SQA
-            I = self.SQA_Intepolator(np.log10(chi))
-            R = (a * (MASS_E_C2 ** 2) / (5.196152423 * np.pi * T)) * I
+            f = (1 + 0.5218 * (chi ** (2/3))) / (1 + 0.8526 * (chi ** (2/3) + 0.1632 * (chi ** (4/3))))
+            R = 0.46 * (a / l) * (B_abs * sin_theta) / B_crit * (chi ** (-1/3)) * np.exp((-4/(3*chi)) * f)
 
         chance = 1 - np.exp(-R * path)
         rnd = np.random.random()
